@@ -1,4 +1,6 @@
 SnapQuiz::Application.routes.draw do
+  root to: 'students#index'
+
   resources :questions
   resources :students
 
@@ -44,17 +46,10 @@ SnapQuiz::Application.routes.draw do
   #     end
   #   end
 
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
+  get '/quiz/:id' => 'quiz#show', as: 'quiz'
+  post '/quiz/:id' => 'quiz#answer', as: 'answer'
+  post '/quiz/new/:student' => 'quiz#new', as: 'new_quiz'
 
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  get '/you_win' => 'quiz#win'
+  get '/you_fail' => 'quiz#fail'
 end

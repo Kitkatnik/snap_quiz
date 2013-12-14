@@ -1,0 +1,83 @@
+<style>
+  .content{
+    display:none;
+  }
+  h1, form, input, button{
+    display: block;
+  }
+  .timer input{
+    width: auto;
+    text-align: center;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="welcome col-xs-3 center-block">
+      <button class="start-btn text-center">
+        I'm Ready!
+      </button>
+    </div>
+
+    <div class="content col-xs-3">
+      <h1>Question</h1>
+      <div class="body">
+        <p><%= @quiz.question.body %></p>
+      </div>
+      <%= form_tag answer_path do %>
+        <div class="answer">
+          <div class="form-group">
+            <label for="answer">Your Answer</label>
+            <%= text_field_tag 'answer', nil, class: 'form-control' %>
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      <% end %>
+      <div class="timer">
+        <span>Time left to answer</span>
+        <input id="countdown_clock" value="00:10" placeholder="00:00:00"/>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function($){
+    var $welcome = $('.welcome'),
+      $content = $('.content, .timer'),
+      $form = $('form');
+      answerPeriod = 11000; //TODO: to be filled in server-side
+
+    bindEvents();
+
+    function bindEvents(){
+      $('.start-btn', $welcome).on('click', showQuestion);
+    }
+
+    function startClock(){
+      var $clock = $('#countdown_clock'),
+        countdown = Tock({
+                  countdown: true,
+                  interval: 500,
+                  callback: function () {
+                    var newTime = countdown.msToTime(countdown.lap());
+                    newTime = newTime.substring(0, newTime.length - 4);
+                      $clock.val(newTime);
+                  },
+                  complete: function () {
+                    $('#answer').prop('disabled', true);
+                    $('form').submit();
+                  }
+              });
+      countdown.start(answerPeriod);
+    }
+
+    function showQuestion(){
+      //TODO: Check that the question hasnt expired before showing it?
+      $welcome.fadeOut(function(){
+        $content.fadeIn(function(){
+          startClock();
+        });
+      });
+    }
+  })(jQuery);
+</script>
