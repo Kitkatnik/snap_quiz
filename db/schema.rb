@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131214210335) do
+ActiveRecord::Schema.define(version: 20131214215858) do
 
   create_table "questions", force: true do |t|
     t.text     "body"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20131214210335) do
   create_table "quizzes", force: true do |t|
     t.integer  "question_id"
     t.integer  "student_id"
-    t.string   "response"
+    t.string   "response",    default: "(No Response)"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "result",      default: "no answer"
