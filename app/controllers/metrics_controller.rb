@@ -1,6 +1,7 @@
 class MetricsController < ApplicationController
   def index
     @quizzes = Quiz.group("result").count
+    @count = Quiz.count
   end
 
   def question
