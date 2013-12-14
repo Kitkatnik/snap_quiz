@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "http://www.google.com/jsapi", "chartkick" %>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
@@ -15,8 +16,8 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    
+
     <%= yield %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
   </body>
 </html>

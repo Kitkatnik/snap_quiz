@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131214021231) do
+ActiveRecord::Schema.define(version: 20131214210335) do
 
   create_table "questions", force: true do |t|
     t.text     "body"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20131214021231) do
     t.string   "response"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "result",      default: "no answer"
   end
 
   add_index "quizzes", ["question_id"], name: "index_quizzes_on_question_id"
