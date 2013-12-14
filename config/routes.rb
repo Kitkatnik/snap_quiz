@@ -1,4 +1,6 @@
 SnapQuiz::Application.routes.draw do
+  root to: 'students#index'
+
   resources :questions
   resources :students
   # The priority is based upon order of creation: first created -> highest priority.
