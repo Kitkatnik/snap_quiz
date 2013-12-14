@@ -1,0 +1,79 @@
+<div class="row-fluid text-center welcome">
+  <div class="span8 offset2 well">
+   	<p class="lead">
+   		Hi <%= @quiz.student.name %>.<br/>
+   		You have 10 seconds to complete this quiz.</p>
+     	<button type="button" class="btn btn-info start-btn">
+      	I'm Ready!
+     	</button>
+  </div>
+</div>
+		
+<div class="row-fluid content ">
+  <div class="span8 offset2 well">
+    <h1 class="text-center">Quiz</h1>
+    <hr>
+    <div class="body lead">
+      <p>Question: <%= @quiz.question.body %></p>
+    </div>
+    <%= form_tag answer_path do %>
+      <div class="answer">
+        <div class="form-group">
+          <label for="answer">Your Answer</label>
+          <%= text_field_tag 'answer', nil, class: 'form-control', placeholder:"Enter answer" %>
+        </div><!-- form-group -->
+        <div class="span4">
+        	<button type="submit" class="btn btn-info">Submit</button>
+      	</div>
+      </div><!-- answer -->
+    <% end %>
+    <br />
+    <div class="timer">
+      <span>Time left to answer</span>
+      <br />
+      <input class="text-center" id="countdown_clock" value="00:10" placeholder="00:00:00"/>
+    </div><!-- timer -->
+  </div><!-- well -->
+</div> <!-- row -->
+
+<script>
+  (function($){
+    var $welcome = $('.welcome'),
+      $content = $('.content, .timer'),
+      $form = $('form');
+      answerPeriod = 11000; //TODO: to be filled in server-side
+
+    bindEvents();
+
+    function bindEvents(){
+      $('.start-btn', $welcome).on('click', showQuestion);
+    }
+
+    function startClock(){
+      var $clock = $('#countdown_clock'),
+        countdown = Tock({
+                  countdown: true,
+                  interval: 500,
+                  callback: function () {
+                    var newTime = countdown.msToTime(countdown.lap());
+                    newTime = newTime.substring(0, newTime.length - 4);
+                      $clock.val(newTime);
+                  },
+                  complete: function () {
+                    $('#answer').prop('disabled', true);
+                    $('form').submit();
+                  }
+              });
+      countdown.start(answerPeriod);
+    }
+
+    function showQuestion(){
+      //TODO: Check that the question hasnt expired before showing it?
+      $welcome.fadeOut(function(){
+        $content.fadeIn(function(){
+          startClock();
+        });
+      });
+    }
+  })(jQuery);
+</script>
