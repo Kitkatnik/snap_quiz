@@ -9,4 +9,8 @@ class QuizController < ApplicationController
 
     redirect_to students_path
   end
+
+  def show
+    @quiz = Quiz.find params[:id]
+  end
 end
