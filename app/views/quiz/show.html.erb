@@ -1,0 +1,121 @@
+<div class="container">
+	<style>
+		.content{
+			display:none;
+		}
+		h1, form, input, button{
+			display: block;
+		}
+	</style>
+	<div class="welcome">
+		<button class="start-btn">
+			I'm Ready!
+		</button>
+	</div>
+
+	<div class="content">
+		<h1>Question</h1>
+		<form>
+			<div class="timer">
+				<input id="countdown_clock" value="00:10" placeholder="00:00:00"/>
+			</div>
+			<div class="body">
+				<p><%= @quiz.question.body %></p>
+			</div>
+			<div class="answer">
+				<input type="hidden" name="question_id" value=""/>
+				<input type="hidden" name="student_id" value=""/>
+				<input type="text" name="answer"/>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	(function($){
+		var $welcome = $('.welcome'),
+			$content = $('.content'),
+			$form = $('form');
+			answerPeriod = 10000; //TODO: to be filled in server-side
+		
+		bindEvents();
+
+		function bindEvents(){
+			$('.start-btn', $welcome).on('click', showQuestion);
+			$form.on('submit', formSubmitHandler);
+		}
+
+		function startClock(){
+			var $clock = $('#countdown_clock'),
+				countdown = Tock({
+	                countdown: true,
+	                interval: 500,
+	                callback: function () {
+	                	var newTime = countdown.msToTime(countdown.lap());
+	                	newTime = newTime.substring(0, newTime.length - 4);
+	                    $clock.val(newTime);
+	                },
+	                complete: function () {
+	                    console.log('submit');
+	                }
+	            });
+			countdown.start(answerPeriod);
+		}
+
+		function showQuestion(){
+			//TODO: Check that the question hasnt expired before showing it?
+			$welcome.fadeOut(function(){
+				$content.fadeIn(function(){
+					startClock();
+				});
+			});
+		}
+
+		function formSubmitHandler(e){
+			var $form = $(this),
+				errors,
+				data;
+			
+			e.preventDefault();
+
+			errors = validateForm($form);
+			console.log(errors);
+
+			if (errors.length != 0){
+				//TODO: Show errors.
+			} else {
+				data = $(this).serialize();
+				//TODO: Submit answer
+				$.ajax({
+					url: "",
+					type: "POST",
+					data: data,
+					success: formResponseHandler,
+					error: formResponseHandler
+				});
+			}
+			
+		}
+
+		function formResponseHandler(response){
+			console.log(response);
+		}
+
+		function validateForm($form){
+			var errors = [];
+			$('input', $form).each(function($el){
+				var input = $(this).val(),
+					field = $(this).attr('name');
+
+				if(input.length == 0){
+					errors = {
+						field: field,
+						error: "The " + field + " field cannot be empty."
+					};
+				}
+			});
+
+			return errors;
+		}
+	})(jQuery);
+</script>
