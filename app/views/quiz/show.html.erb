@@ -65,7 +65,7 @@
                   },
                   complete: function () {
                     $('#answer').prop('disabled', true);
-                      console.log('submit');
+                    $('form').submit();
                   }
               });
       countdown.start(answerPeriod);
