@@ -1,0 +1,25 @@
+<div class="container">
+  <p class="lead">Josef says: I'm feeling evil today ! Here's a pop quiz :)</p>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>email</th>
+          <th>number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <td><%= student.phone_number %></td>
+          </tr>
+        <% end %>
+      </tbody>
+
+
+    </table>
+  </div>
+</div>
