@@ -57,3 +57,14 @@ gem "twitter-bootstrap-rails"
 
 gem "chartkick"
 gem 'letter_opener', group: :development
+
+group :test do
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+
+  gem 'rspec-rails'
+end
+
+group :development, :test do
+  gem 'factory_girl_rails'
+end
